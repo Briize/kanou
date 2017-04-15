@@ -1,0 +1,42 @@
+General encounter steps
+
+How many in encounter? (Combatant check)
+If more than 2, are there any existing pacts? (Combatant check)
+When is the encounter taking place? (Time check)
+Where is the encounter taking place? (Map position check)
+What is the distance? (Map position check)
+Can a fight be avoided? (General stat check)
+What caused the encounter? (Map check, event check)
+
+
+Fight
+
+Who gets the first attack? (General stat check)
+What do they use to attack? (Weapon attack)
+Do they hit? (General stat check)
+Where do they aim? (Randomiser)
+How much damage do they cause? (Weapon attack and general)
+Do they kill? (Health check)
+Do they knock out? (Health check)
+Do they cause an injury? (Damage level, general, randomiser)
+Can the attackee retaliate? (Damage level, general, randomiser)
+Who gets next attack? (Damage level, general, randomiser)
+Can a death be avoided? (Damage level, general, randomiser)
+If not, roll again
+
+
+Pact
+
+Are the combatants related? (Relationships check)
+Are the combatants strong? (General stat check)
+Are the combatants weak? (General stat check)
+Is one combatant protecting the other? (General stat check)
+Is it random? (Randomiser)
+What is the pact strength (Relationship check)
+
+
+Pact strength
+
+Pact strength increases, decreases, or stays the same (general, combatants left)
+
+

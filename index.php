@@ -2,16 +2,20 @@
 
 <html lang="en">
 	
-	<?php include 'header.php'; ?>
+	<?php include 'assets/php/header.php'; ?>
 
 	<body>
 
 		<header></header>
 
 		<main>
-			<?php include 'combatants.php'; ?>
 
-			<?php include 'functions.php'; ?>
+			<?php include 'assets/php/arena.php'; ?>
+
+			<p class="moves"></p>
+
+			<p class="combatantContainer"></p>
+			
 		</main>
 
 		<footer></footer>
