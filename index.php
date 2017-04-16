@@ -15,6 +15,8 @@
 			<p class="moves"></p>
 
 			<p class="combatantContainer"></p>
+
+			<p class="next">Next</p>
 			
 		</main>
 

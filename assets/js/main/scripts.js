@@ -4,11 +4,9 @@ $(function() {
   		MaxPosition = 190, // Maximum position the combatants can be, both x and y axis, may change in future
   		minMove = -10, // Combatants can move 10px in either direction
   		maxMove = 10, // Combatants can move 10px in either direction
-  		encounterCheck = false, // Have combatants encounterChecked eachother?
-  		totalMoves = 0, // How many moves have happened?
+  		encounterCheck = false, // Have combatants encountered each other?
+  		totalMoves = 1, // How many moves have happened?
   		index; // Index for combatants
-
-  	//combatants.push({"name":"Player 5","gender":"male","image":"","status":"Alive","strength":20,"dexterity":20,"constitution":20,"intelligence":20,"wisdom":20,"charisma":20,"longitude":0,"latitude":0,"health":100,"hunger":100,"thirst":100,"energy":100,"sanity":100,"injuries":[""],"weapons":[""],"relationships":[""],"odds":1.0});
 
   	function getCombatants() {
 		
@@ -49,18 +47,19 @@ $(function() {
 		  	if ($(element).attr("data-moved") == "false") {
 
 			  	contact("#char" + index, ".char:not(#char" + index + ", [data-moved=true])"); // Check this char against all the others
-			  	
 			}
 
 		});
 
 	};
 
+	moveChar();
+
   	// Contact script, for encounters
 	function contact(contactChar, contactOthers) {
 
 	    var $contactChar = $(contactChar),
-	    	visionBonus = 10,
+	    	visionBonus = 0,
 	    	contactCharAxis = $contactChar.offset(),
 	    	contactChar_x = [contactCharAxis.left - visionBonus, contactCharAxis.left + $contactChar.outerWidth() + visionBonus], // Get x axis
 	    	contactChar_y = [contactCharAxis.top - visionBonus, contactCharAxis.top + $contactChar.outerHeight() + visionBonus], // Get y axis
@@ -84,8 +83,7 @@ $(function() {
 
 	    	contactList.push(contactChar);
 			encounterCheck = true; // Encounter is now true
-
-			console.log("STOP");
+			alert("Hello! I am an alert box!!");
 
 			$(contactList).each(function(contactListCounter, val) {
 				$(val).attr("data-moved", "true");
@@ -93,51 +91,72 @@ $(function() {
 
 			encounter(contactList); 
 		}
+
+		else {
+			moveChar();
+		}
 	};
 
 	function encounter(contactList) {
 
-		console.log(contactList.length);
-
 		var encounterNumber = contactList.length,
-			encounterChance = Math.floor((Math.random() * 100) + 1);
+			encounterChance = Math.floor((Math.random() * 100) + 1),
+			fightChance = 50,
+			ignoreChance = 25,
+			pactChance = 25;
 		
-		if (encounterChance < 25) {
-			// Fight
+		if (encounterChance < fightChance) {
+			// Combat
+			combat(contactList, encounterNumber);
+
 		}
 
-		else if (encounterChance < 26 && encounterChance < 50) {
+		else if (encounterChance < fightChance + 1 && encounterChance < fightChance + ignoreChance ) {
 			// Ignore
+			ignore(contactList, encounterNumber);
 		}
 
-		else if (encounterChance < 51 && encounterChance < 75) {
+		else if (encounterChance < fightChance + ignoreChance + 1 && encounterChance < 100) {
 			// Pact
+			pact(contactList, encounterNumber);
 		}
-
-		else {
-			// Other
-		}
-
 
 	}
 
 	// Combat script
-	function combat(combatantList) {
-		
-		function combatSuccess() {
+	function combat(combatantList, length) {
 
-			var combatant1Index = $(combatant1).attr("data-index"),
-			 	combatant2Index = $(combatant2).attr("data-index");
+		console.log("COMBAT");
 
-		}
+		moveChar();
+
 	}
 
-	setInterval(function(){ 
-		if (!encounterCheck) {
+	// Ignore script
+	function ignore(ignoreList, length) {
+
+		console.log("IGNORE");
+
+		moveChar();
+
+	}
+
+	// Pact script
+	function pact(pactList, length) {
+
+		console.log("PACT");
+
+		moveChar();
+	}
+
+	/*setInterval(function(){ 
+		if (encounterCheck == false) {
     		moveChar();
     		totalMoves++;
     		$(".moves").text(totalMoves);
 		}
-	}, 500);
+		else {
+		}
+	}, 1000);*/
 
 });
