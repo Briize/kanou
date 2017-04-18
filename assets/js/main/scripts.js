@@ -1,5 +1,9 @@
 $(function() {
 
+	console.log(combatants2);
+
+	console.log(combatants2.batter[0].charisma);
+
 	var minPosition = 0, // Minimum position the combatants can be, both x and y axis, may change in future
   		MaxPosition = 190, // Maximum position the combatants can be, both x and y axis, may change in future
   		minMove = -10, // Combatants can move 10px in either direction
@@ -26,34 +30,35 @@ $(function() {
 
 	getCombatants();
 
-	function moveChar() {
+	function moveChar(callback) {
 
 		$( ".char[data-status='alive'").each(function( index, element ) {
 
-		  	var top = $(element).position().top,
-		  		left = $(element).position().left,
-		  		positionChangeTop = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove,
-				positionChangeLeft = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove;
-		  	
-		  	if (top + positionChangeTop >= minPosition && top + positionChangeTop <= MaxPosition) {
-	  			$(element).css("top", top + positionChangeTop);
-		  	}
-		  	if (left + positionChangeLeft >= minPosition && left + positionChangeLeft <= MaxPosition) {
-	  			$(element).css("left", left + positionChangeLeft);
-	  		}
-
 		  	// Check for contact
 
-		  	if ($(element).attr("data-moved") == "false") {
-
-			  	contact("#char" + index, ".char:not(#char" + index + ", [data-moved=true])"); // Check this char against all the others
-			}
+			  	contact("#char" + index, ".char:not(#char" + index + ", [data-moved=true], [data-moved=dead])"); // Check this char against all the others
 
 		});
 
-	};
+		if (encounterCheck == false) {
+			$( ".char[data-status='alive'").each(function( index, element ) {
 
-	moveChar();
+			  	var top = $(element).position().top,
+			  		left = $(element).position().left,
+			  		positionChangeTop = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove,
+					positionChangeLeft = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove;
+			  	
+			  	if (top + positionChangeTop >= minPosition && top + positionChangeTop <= MaxPosition) {
+		  			$(element).css("top", top + positionChangeTop);
+			  	}
+			  	if (left + positionChangeLeft >= minPosition && left + positionChangeLeft <= MaxPosition) {
+		  			$(element).css("left", left + positionChangeLeft);
+		  		}
+
+			});
+		}
+
+	};
 
   	// Contact script, for encounters
 	function contact(contactChar, contactOthers) {
@@ -83,7 +88,7 @@ $(function() {
 
 	    	contactList.push(contactChar);
 			encounterCheck = true; // Encounter is now true
-			alert("Hello! I am an alert box!!");
+			console.log("I'm setting it true ya bish");
 
 			$(contactList).each(function(contactListCounter, val) {
 				$(val).attr("data-moved", "true");
@@ -91,19 +96,17 @@ $(function() {
 
 			encounter(contactList); 
 		}
-
-		else {
-			moveChar();
-		}
 	};
 
 	function encounter(contactList) {
 
 		var encounterNumber = contactList.length,
 			encounterChance = Math.floor((Math.random() * 100) + 1),
-			fightChance = 50,
+			fightChance = 100,
 			ignoreChance = 25,
 			pactChance = 25;
+
+
 		
 		if (encounterChance < fightChance) {
 			// Combat
@@ -126,9 +129,58 @@ $(function() {
 	// Combat script
 	function combat(combatantList, length) {
 
-		console.log("COMBAT");
+		var combatCounter = 0,
+			combatantListDetailsArray = {};
 
-		moveChar();
+		// Get array of all combatant details
+		$(combatantList).each(function (){
+
+			var combatantID = combatantList[combatCounter],
+				combatantData = combatants[$(combatantID).attr("data-index")];
+
+			combatantListDetailsArray[combatantID] = [combatantData];
+
+			combatCounter++
+
+		});
+
+		console.log(combatantListDetailsArray);
+
+
+
+		/*if (combatantListDetailsArray.length === 2) {
+
+			var combatantOneFirstHit  = combatantListDetailsArray[0]['dexterity'] * combatantListDetailsArray[0]['energy'],
+				combatantTwoFirstHit  = combatantListDetailsArray[1]['dexterity'] * combatantListDetailsArray[1]['energy']
+
+			
+
+			if (combatantOneFirstHit > combatantTwoFirstHit) {
+				combatantListDetailsArray[1]['status'] = 'dead';
+				$(combatantList[1]).attr("data-status", "dead");
+			}
+
+			else if (combatantOneFirstHit < combatantTwoFirstHit) {
+				combatantListDetailsArray[0]['status'] = 'dead';
+				$(combatantList[0]).attr("data-status", "dead");
+			}
+
+			else {
+				console.log("CROSS COUNTER");
+			}
+		}
+
+		else {
+
+		}*/
+
+		//combatPopup(combatantListDetailsArray);
+
+	}
+
+	function combatPopup(popupList) {
+
+
 
 	}
 
@@ -137,26 +189,26 @@ $(function() {
 
 		console.log("IGNORE");
 
-		moveChar();
-
 	}
 
 	// Pact script
 	function pact(pactList, length) {
 
 		console.log("PACT");
-
-		moveChar();
 	}
 
-	/*setInterval(function(){ 
+	$(".next").on('click', function() {
+		encounterCheck = false;
+	});
+
+	setInterval(function(){ 
 		if (encounterCheck == false) {
-    		moveChar();
+			moveChar();
     		totalMoves++;
     		$(".moves").text(totalMoves);
 		}
 		else {
 		}
-	}, 1000);*/
+	}, 1000);
 
 });

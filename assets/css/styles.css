@@ -1,1 +1,48 @@
-#container{height:200px;width:200px;margin:0 auto;float:none;position:relative;border:1px solid black}#container .char{content:"";height:10px;width:10px;position:absolute;transition:top 0.5s, left 0.5s linear;-moz-transition:top 0.5s, left 0.5s linear;-webkit-transition:top 0.5s, left 0.5s linear;-o-transition:top 0.5s, left 0.5s linear}
+#container {
+  height: 200px;
+  width: 200px;
+  margin: 0 auto;
+  float: none;
+  position: relative;
+  border: 1px solid black;
+}
+#container .char {
+  content: "";
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  transition: top 0.5s, left 0.5s linear;
+  -moz-transition: top 0.5s, left 0.5s linear;
+  -webkit-transition: top 0.5s, left 0.5s linear;
+  -o-transition: top 0.5s, left 0.5s linear;
+}
+#container .char[data-status='dead'] {
+  background: grey !important;
+}
+#popup {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: visible;
+  opacity: 1;
+}
+#popup.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+#popup .popup_holder {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+#popup .popup_holder .popup_content {
+  overflow: auto;
+}
