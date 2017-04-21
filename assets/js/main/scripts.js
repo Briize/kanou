@@ -1,5 +1,9 @@
 $(function() {
 
+	//console.log(combatants2);
+
+	//console.log(combatants2.batter2[0].charisma);
+
 	var minPosition = 0, // Minimum position the combatants can be, both x and y axis, may change in future
   		MaxPosition = 190, // Maximum position the combatants can be, both x and y axis, may change in future
   		minMove = -10, // Combatants can move 10px in either direction
@@ -8,6 +12,7 @@ $(function() {
   		totalMoves = 1, // How many moves have happened?
   		index; // Index for combatants
 
+  	// Adds all combatants to the field
   	function getCombatants() {
 		
 		var combatantNumbers = combatants.length;
@@ -26,34 +31,35 @@ $(function() {
 
 	getCombatants();
 
-	function moveChar() {
+	function moveChar(callback) {
 
 		$( ".char[data-status='alive'").each(function( index, element ) {
 
-		  	var top = $(element).position().top,
-		  		left = $(element).position().left,
-		  		positionChangeTop = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove,
-				positionChangeLeft = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove;
-		  	
-		  	if (top + positionChangeTop >= minPosition && top + positionChangeTop <= MaxPosition) {
-	  			$(element).css("top", top + positionChangeTop);
-		  	}
-		  	if (left + positionChangeLeft >= minPosition && left + positionChangeLeft <= MaxPosition) {
-	  			$(element).css("left", left + positionChangeLeft);
-	  		}
-
 		  	// Check for contact
 
-		  	if ($(element).attr("data-moved") == "false") {
-
-			  	contact("#char" + index, ".char:not(#char" + index + ", [data-moved=true])"); // Check this char against all the others
-			}
+			  	contact("#char" + index, ".char:not(#char" + index + ", [data-moved=true], [data-moved=dead])"); // Check this char against all the others
 
 		});
 
-	};
+		if (encounterCheck == false) {
+			$( ".char[data-status='alive'").each(function( index, element ) {
 
-	moveChar();
+			  	var top = $(element).position().top,
+			  		left = $(element).position().left,
+			  		positionChangeTop = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove,
+					positionChangeLeft = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove;
+			  	
+			  	if (top + positionChangeTop >= minPosition && top + positionChangeTop <= MaxPosition) {
+		  			$(element).css("top", top + positionChangeTop);
+			  	}
+			  	if (left + positionChangeLeft >= minPosition && left + positionChangeLeft <= MaxPosition) {
+		  			$(element).css("left", left + positionChangeLeft);
+		  		}
+
+			});
+		}
+
+	};
 
   	// Contact script, for encounters
 	function contact(contactChar, contactOthers) {
@@ -83,17 +89,23 @@ $(function() {
 
 	    	contactList.push(contactChar);
 			encounterCheck = true; // Encounter is now true
-			alert("Hello! I am an alert box!!");
 
 			$(contactList).each(function(contactListCounter, val) {
 				$(val).attr("data-moved", "true");
 			});
 
-			encounter(contactList); 
-		}
+			var encounterListDetailsArray = [];
 
-		else {
-			moveChar();
+			$(contactList).each(function (contactListIndex){
+
+				var contactID = contactList[contactListIndex],
+					contactData = combatants[$(contactID).attr("data-index")];
+					
+				encounterListDetailsArray.push(contactData);
+
+			});
+
+			encounter(encounterListDetailsArray); 
 		}
 	};
 
@@ -101,14 +113,13 @@ $(function() {
 
 		var encounterNumber = contactList.length,
 			encounterChance = Math.floor((Math.random() * 100) + 1),
-			fightChance = 50,
+			fightChance = 100,
 			ignoreChance = 25,
 			pactChance = 25;
-		
+
 		if (encounterChance < fightChance) {
 			// Combat
 			combat(contactList, encounterNumber);
-
 		}
 
 		else if (encounterChance < fightChance + 1 && encounterChance < fightChance + ignoreChance ) {
@@ -124,39 +135,109 @@ $(function() {
 	}
 
 	// Combat script
-	function combat(combatantList, length) {
+	function combat(combatantList) {
 
-		console.log("COMBAT");
+		/*var combatCounter = 0,
+			combatantListDetailsArray = [];
 
-		moveChar();
+		// Get array of all combatant details
+		$(combatantList).each(function (){
+
+			var combatantID = combatantList[combatCounter],
+				combatantData = combatants[$(combatantID).attr("data-index")];
+
+			combatantListDetailsArray.push(combatantData);
+
+			//console.log(combatantListDetailsArray.combatantID[0].name);
+
+			combatCounter++;
+
+		});*/
+
+		// First hit calculation
+
+		var combatantOrder = [];
+
+		$(combatantList).each(function(combatantListArrayIndex, combatantListArrayElement) {
+
+			var combatantOrderID = combatantList[combatantListArrayIndex]['id'],
+				combatantOrderCalc  = combatantList[combatantListArrayIndex]['dexterity'] * combatantList[combatantListArrayIndex]['energy'] * (Math.random() * (0.5 - 1.5) + 1.5).toFixed(1);
+
+			combatantOrder.push({id: combatantOrderID, speed: combatantOrderCalc});
+
+		});
+
+		combatantOrder.sort(function(a, b) { 
+		    return (a.speed - b.speed); 
+		});
+
+		console.log(combatantOrder[0]['id']);
+
+		combatPopup(combatantList,combatantOrder)
+
+		/*if (combatantListDetailsArray.length === 2) {
+
+			var combatantOneFirstHit  = combatantListDetailsArray[0]['dexterity'] * combatantListDetailsArray[0]['energy'],
+				combatantTwoFirstHit  = combatantListDetailsArray[1]['dexterity'] * combatantListDetailsArray[1]['energy']
+
+			
+
+			if (combatantOneFirstHit > combatantTwoFirstHit) {
+				combatantListDetailsArray[1]['status'] = 'dead';
+				$(combatantList[1]).attr("data-status", "dead");
+			}
+
+			else if (combatantOneFirstHit < combatantTwoFirstHit) {
+				combatantListDetailsArray[0]['status'] = 'dead';
+				$(combatantList[0]).attr("data-status", "dead");
+			}
+
+			else {
+				console.log("CROSS COUNTER");
+			}
+		}
+
+		else {
+
+		}*/
+
+		//combatPopup(combatantListDetailsArray);
+
+	}
+
+	function combatPopup(popupList, popupOrder) {
+
+		$("#popup").removeClass("hidden");
+
+		$(".next").on( "click", function() {
+		  	for (popupCounter = 0; popupCounter < popupList.length; popupCounter++) { 
+			    $(".popup_content").append("<p>" + popupList[popupCounter]['name'] + "</p>");
+			}
+		});
 
 	}
 
 	// Ignore script
-	function ignore(ignoreList, length) {
+	function ignore(ignoreList) {
 
 		console.log("IGNORE");
-
-		moveChar();
 
 	}
 
 	// Pact script
-	function pact(pactList, length) {
+	function pact(pactList) {
 
 		console.log("PACT");
-
-		moveChar();
 	}
 
-	/*setInterval(function(){ 
+	setInterval(function(){ 
 		if (encounterCheck == false) {
-    		moveChar();
+			moveChar();
     		totalMoves++;
     		$(".moves").text(totalMoves);
 		}
 		else {
 		}
-	}, 1000);*/
+	}, 1000);
 
 });

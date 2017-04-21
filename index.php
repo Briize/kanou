@@ -16,7 +16,9 @@
 
 			<p class="combatantContainer"></p>
 
-			<p class="next">Next</p>
+			<?php include 'assets/php/popup.php'; ?>
+
+			
 			
 		</main>
 
