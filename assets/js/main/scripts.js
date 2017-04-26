@@ -1,14 +1,8 @@
 $(function() {
 
-<<<<<<< HEAD
 	//console.log(combatants2);
 
 	//console.log(combatants2.batter2[0].charisma);
-=======
-	console.log(combatants2);
-
-	console.log(combatants2.batter[0].charisma);
->>>>>>> 868e0cfae36ce053d761b9d5a0cbbeb123de6192
 
 	var minPosition = 0, // Minimum position the combatants can be, both x and y axis, may change in future
   		MaxPosition = 190, // Maximum position the combatants can be, both x and y axis, may change in future
@@ -61,17 +55,10 @@ $(function() {
 			  	if (left + positionChangeLeft >= minPosition && left + positionChangeLeft <= MaxPosition) {
 		  			$(element).css("left", left + positionChangeLeft);
 		  		}
-<<<<<<< HEAD
 
 			});
 		}
 
-=======
-
-			});
-		}
-
->>>>>>> 868e0cfae36ce053d761b9d5a0cbbeb123de6192
 	};
 
   	// Contact script, for encounters
@@ -102,16 +89,11 @@ $(function() {
 
 	    	contactList.push(contactChar);
 			encounterCheck = true; // Encounter is now true
-<<<<<<< HEAD
-=======
-			console.log("I'm setting it true ya bish");
->>>>>>> 868e0cfae36ce053d761b9d5a0cbbeb123de6192
 
 			$(contactList).each(function(contactListCounter, val) {
 				$(val).attr("data-moved", "true");
 			});
 
-<<<<<<< HEAD
 			var encounterListDetailsArray = [];
 
 			$(contactList).each(function (contactListIndex){
@@ -124,9 +106,6 @@ $(function() {
 			});
 
 			encounter(encounterListDetailsArray); 
-=======
-			encounter(contactList); 
->>>>>>> 868e0cfae36ce053d761b9d5a0cbbeb123de6192
 		}
 	};
 
@@ -138,11 +117,6 @@ $(function() {
 			ignoreChance = 25,
 			pactChance = 25;
 
-<<<<<<< HEAD
-=======
-
-		
->>>>>>> 868e0cfae36ce053d761b9d5a0cbbeb123de6192
 		if (encounterChance < fightChance) {
 			// Combat
 			combat(contactList, encounterNumber);
@@ -186,7 +160,6 @@ $(function() {
 
 		$(combatantList).each(function(combatantListArrayIndex, combatantListArrayElement) {
 
-<<<<<<< HEAD
 			var combatantOrderID = combatantList[combatantListArrayIndex]['id'],
 				combatantOrderCalc  = combatantList[combatantListArrayIndex]['dexterity'] * combatantList[combatantListArrayIndex]['energy'] * (Math.random() * (0.5 - 1.5) + 1.5).toFixed(1);
 
@@ -241,60 +214,6 @@ $(function() {
 			    $(".popup_content").append("<p>" + popupList[popupCounter]['name'] + "</p>");
 			}
 		});
-=======
-		var combatCounter = 0,
-			combatantListDetailsArray = {};
-
-		// Get array of all combatant details
-		$(combatantList).each(function (){
-
-			var combatantID = combatantList[combatCounter],
-				combatantData = combatants[$(combatantID).attr("data-index")];
-
-			combatantListDetailsArray[combatantID] = [combatantData];
-
-			combatCounter++
-
-		});
-
-		console.log(combatantListDetailsArray);
-
-
-
-		/*if (combatantListDetailsArray.length === 2) {
-
-			var combatantOneFirstHit  = combatantListDetailsArray[0]['dexterity'] * combatantListDetailsArray[0]['energy'],
-				combatantTwoFirstHit  = combatantListDetailsArray[1]['dexterity'] * combatantListDetailsArray[1]['energy']
-
-			
-
-			if (combatantOneFirstHit > combatantTwoFirstHit) {
-				combatantListDetailsArray[1]['status'] = 'dead';
-				$(combatantList[1]).attr("data-status", "dead");
-			}
-
-			else if (combatantOneFirstHit < combatantTwoFirstHit) {
-				combatantListDetailsArray[0]['status'] = 'dead';
-				$(combatantList[0]).attr("data-status", "dead");
-			}
-
-			else {
-				console.log("CROSS COUNTER");
-			}
-		}
-
-		else {
-
-		}*/
-
-		//combatPopup(combatantListDetailsArray);
-
-	}
-
-	function combatPopup(popupList) {
-
-
->>>>>>> 868e0cfae36ce053d761b9d5a0cbbeb123de6192
 
 	}
 
@@ -311,13 +230,6 @@ $(function() {
 		console.log("PACT");
 	}
 
-<<<<<<< HEAD
-=======
-	$(".next").on('click', function() {
-		encounterCheck = false;
-	});
-
->>>>>>> 868e0cfae36ce053d761b9d5a0cbbeb123de6192
 	setInterval(function(){ 
 		if (encounterCheck == false) {
 			moveChar();
