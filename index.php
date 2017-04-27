@@ -1,6 +1,6 @@
 <?php include 'assets/php/header.php'; ?>
 
-<main id="index">
+<main class="main" id="index">
 
 	<section id="index_section">
 

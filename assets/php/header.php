@@ -24,18 +24,18 @@
 		  	<![endif]-->
 		</head>
 
-		<body>
+		<body class="nightjar">
 
-		<header>
-			
-			<div class="container">
+			<header>
 				
-				<div class="content">
+				<div class="container">
+					
+					<div class="content">
 
-					<p>nightjar</p>
+						<p>nightjar</p>
+
+					</div>
 
 				</div>
 
-			</div>
-
-		</header>
+			</header>

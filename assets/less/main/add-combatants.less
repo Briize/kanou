@@ -4,13 +4,23 @@
 
 		.combatant {
 		    padding: 20px 0;
+		    position: relative;
+		    display: flex;
+    		justify-content: flex-start;
+    		align-items: center;
+    		border-bottom: 1px dashed #201F1D;
+
+		    .remove_combatant {
+				cursor: pointer;
+		    }
 
 			.combatant_image {
 
 				.combatant_image_container {
-					width: 150px;
-					height: 150px;
+					width: 148px;
+					height: 148px;
 					border: 1px solid #201F1D;
+					background: #201F1D;
 
 					img {
 						width: 100%;
@@ -19,9 +29,26 @@
 
 				}
 
-			}			
+			}	
 
-		}		
+			.combatant_data {
+				
+			}	
+
+		}	
+
+		#additional_combatant {
+			position: relative;
+			height: 40px;
+			display: flex;
+    		align-items: center;
+    		justify-content: center;
+
+			#additional_combatant-button {
+				cursor: pointer;
+			}
+
+		}	
 
 	}
 	
