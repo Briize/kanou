@@ -27,7 +27,6 @@ $( function() {
 
 	$(".content").on( "click", ".remove_combatant", function() {
 
-		console.log(this + "test");
 		$(this).parents(".combatant").remove();
 		combatantCount--;
 
@@ -36,6 +35,15 @@ $( function() {
 			$(this).attr("id","combatant_" + index);
 
 		});
+
+	});
+
+	$(".content").on( "click", ".combatant_image_inputs_button", function() {
+
+		var combatant_image_url = $(this).parents(".combatant").find(".combatant_image_inputs_input").val(),
+			combatant_image = $(this).parents(".combatant").find(".combatant_image_inputs_input").val()
+
+		console.log(combatant_image);
 
 	});
 
