@@ -21,7 +21,7 @@ $(function() {
 		
 		while (combatantCounter < combatantNumbers) {
 
-			$("#container").append("<div class='char' id='char" + combatantCounter + "' style='top: " +  Math.floor(Math.random()*(190-0+1)+0) + "px; left: " +  Math.floor(Math.random()*(190-0+1)+0) + "px; background-color: red;' data-index='" + combatantCounter + "' data-name='" + combatants[combatantCounter]["name"] + "' data-status='" + combatants[combatantCounter]["status"] + "' data-moved='false'></div>");
+			$("#container").append("<div class='char' id='char" + combatantCounter + "' style='top: " +  Math.floor(Math.random()*(190-0+1)+0) + "px; left: " +  Math.floor(Math.random()*(190-0+1)+0) + "px; background-color: red;' data-index='" + combatantCounter + "' data-name='" + combatants[combatantCounter]["name"] + "' data-status='" + combatants[combatantCounter]["status"] + "' data-moved='false'>" + combatantCounter + "</div>");
 			
 			combatantCounter++;
 			
@@ -37,7 +37,7 @@ $(function() {
 
 		  	// Check for contact
 
-			  	contact("#char" + index, ".char:not(#char" + index + ", [data-moved=true], [data-moved=dead])"); // Check this char against all the others
+			contact("#char" + index, ".char:not(#char" + index + ", [data-moved=true], [data-moved=dead])"); // Check this char against all the others
 
 		});
 
@@ -113,21 +113,21 @@ $(function() {
 
 		var encounterNumber = contactList.length,
 			encounterChance = Math.floor((Math.random() * 100) + 1),
-			fightChance = 100,
+			combatChance = 100,
 			ignoreChance = 25,
 			pactChance = 25;
 
-		if (encounterChance < fightChance) {
+		if (encounterChance < combatChance) {
 			// Combat
-			combat(contactList, encounterNumber);
+			combat(contactList);
 		}
 
-		else if (encounterChance < fightChance + 1 && encounterChance < fightChance + ignoreChance ) {
+		else if (encounterChance < combatChance + 1 && encounterChance < combatChance + ignoreChance ) {
 			// Ignore
 			ignore(contactList, encounterNumber);
 		}
 
-		else if (encounterChance < fightChance + ignoreChance + 1 && encounterChance < 100) {
+		else if (encounterChance < combatChance + ignoreChance + 1 && encounterChance < 100) {
 			// Pact
 			pact(contactList, encounterNumber);
 		}
@@ -156,25 +156,23 @@ $(function() {
 
 		// First hit calculation
 
-		var combatantOrder = [];
+		//var combatantOrder = [];
 
 		$(combatantList).each(function(combatantListArrayIndex, combatantListArrayElement) {
 
 			var combatantOrderID = combatantList[combatantListArrayIndex]['id'],
 				combatantOrderCalc  = combatantList[combatantListArrayIndex]['dexterity'] * combatantList[combatantListArrayIndex]['energy'] * (Math.random() * (0.5 - 1.5) + 1.5).toFixed(1);
 
-			combatantOrder.push({id: combatantOrderID, speed: combatantOrderCalc});
+			combatantList[combatantListArrayIndex] = {"data": combatantListArrayElement,"speed": combatantOrderCalc};
 
 		});
 
-		combatantOrder.sort(function(a, b) { 
-		    return (a.speed - b.speed); 
+		combatantList.sort(function(a, b) { 
+		    return parseFloat(b.speed - a.speed); 
 		});
 
-		console.log(combatantOrder[0]['id']);
-
-		combatPopup(combatantList,combatantOrder)
-
+		console.log(combatantList);
+		
 		/*if (combatantListDetailsArray.length === 2) {
 
 			var combatantOneFirstHit  = combatantListDetailsArray[0]['dexterity'] * combatantListDetailsArray[0]['energy'],
@@ -203,18 +201,102 @@ $(function() {
 
 		//combatPopup(combatantListDetailsArray);
 
+		//combatPopup(combatantList,combatantOrder);
+
+		combatPopup(combatantList);
+
 	}
 
-	function combatPopup(popupList, popupOrder) {
+	function combatPopup(popupList) {
 
 		$("#popup").removeClass("hidden");
 
+		$(popupList).each(function(popupListArrayIndex, popupListArrayElement) {
+
+			var combatOption = Math.floor((Math.random() * 100) + 1),
+				attackChance = 100,
+				escapeChance = 25,
+				surrenderChance = 25,
+				truceChance =  25;
+
+			if (combatOption < attackChance) {
+				// Attack
+
+				combatPopupAttack(popupList, popupListArrayIndex, popupListArrayElement);
+				console.log("attack");
+			}
+
+			else if (combatOption < attackChance + 1 && combatOption < attackChance + escapeChance ) {
+				// Escape
+				combatPopupEscape(popupList, popupListArrayIndex, popupListArrayElement);
+				console.log("escape");
+			}
+
+			else if (combatOption < attackChance + escapeChance + 1 && combatOption < 100) {
+				// Surrender
+				combatPopupSurrender(popupList, popupListArrayIndex, popupListArrayElement);
+				console.log("surrender");
+			}
+
+			else if (combatOption < attackChance + escapeChance + surrenderChance + 1 && combatOption < 100) {
+				// Truce
+				combatPopupTruce(popupList, popupListArrayIndex, popupListArrayElement);
+				console.log("truce");
+			}
+
+
+
+			//console.log(popupOrder[popupOrderArrayIndex]['id']);
+			//console.log(popupOrder[popupOrderArrayIndex]['speed']);
+
+		});
+
 		$(".next").on( "click", function() {
 		  	for (popupCounter = 0; popupCounter < popupList.length; popupCounter++) { 
-			    $(".popup_content").append("<p>" + popupList[popupCounter]['name'] + "</p>");
+			    $(".popup_content").append("<p>" + popupList[popupCounter]['name'] + " " + popupList[popupCounter]['health'] + "</p>");
 			}
 		});
 
+	}
+
+	function combatPopupAttack(combatPopupList, combatPopupListIndex, combatPopupListCombatant) {
+
+		var targets = [];
+
+		$(combatPopupList).each(function(combatPopupListArrayTargetIndex, combatPopupListArrayTargetElement) {
+
+			if (combatPopupListArrayTargetIndex != combatPopupListIndex) {
+				// Attack
+				targets.push(combatPopupListArrayTargetElement);
+			}
+
+		});
+
+		console.log(combatPopupListCombatant);
+
+		var targetRandomiser = parseInt((Math.random() * (targets.length - 1 + 1)), 10) + 1;
+			target = targets[targetRandomiser - 1];
+
+		console.log(targetRandomiser);
+		console.log(target);
+
+		var weapon = combatPopupListCombatant["data"]["weapons"][Math.floor(Math.random()*combatPopupListCombatant["data"]["weapons"].length)];
+
+		console.log(combatPopupListCombatant["data"]["weapons"].length);
+		console.log(weapon);
+
+	}
+
+	function combatPopupEscape(combatPopupList, combatPopupListIndex, combatPopupListCombatant) {
+		
+	}
+
+	function combatPopupSurrender(combatPopupList, combatPopupListIndex, combatPopupListCombatant) {
+		
+	}
+
+	function combatPopupTruce(combatPopupList, combatPopupListIndex, combatPopupListCombatant) {
+		
 	}
 
 	// Ignore script
