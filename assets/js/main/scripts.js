@@ -5,7 +5,7 @@ $(function() {
 	//console.log(combatants2.batter2[0].charisma);
 
 	var minPosition = 0, // Minimum position the combatants can be, both x and y axis, may change in future
-  		MaxPosition = 190, // Maximum position the combatants can be, both x and y axis, may change in future
+  		MaxPosition = 390, // Maximum position the combatants can be, both x and y axis, may change in future
   		minMove = -10, // Combatants can move 10px in either direction
   		maxMove = 10, // Combatants can move 10px in either direction
   		encounterCheck = false, // Have combatants encountered each other?
@@ -21,7 +21,7 @@ $(function() {
 		
 		while (combatantCounter < combatantNumbers) {
 
-			$("#container").append("<div class='char' id='char" + combatantCounter + "' style='top: " +  Math.floor(Math.random()*(190-0+1)+0) + "px; left: " +  Math.floor(Math.random()*(190-0+1)+0) + "px; background-color: red;' data-index='" + combatantCounter + "' data-name='" + combatants[combatantCounter]["name"] + "' data-status='" + combatants[combatantCounter]["status"] + "' data-moved='false'>" + combatantCounter + "</div>");
+			$("#container").append("<div class='char' id='char" + combatantCounter + "' style='top: " +  Math.floor(Math.random()*(390-0+1)+0) + "px; left: " +  Math.floor(Math.random()*(390-0+1)+0) + "px; background-color: red;' data-index='" + combatantCounter + "' data-name='" + combatants[combatantCounter]["name"] + "' data-status='" + combatants[combatantCounter]["status"] + "' data-moved='false' data-target-moving='false' data-target-top='0' data-target-left='0'>" + combatantCounter + "</div>");
 			
 			combatantCounter++;
 			
@@ -33,7 +33,7 @@ $(function() {
 
 	function moveChar(callback) {
 
-		$( ".char[data-status='alive'").each(function( index, element ) {
+		$( ".char[data-status='alive']").each(function( index, element ) {
 
 		  	// Check for contact
 
@@ -42,12 +42,39 @@ $(function() {
 		});
 
 		if (encounterCheck == false) {
-			$( ".char[data-status='alive'").each(function( index, element ) {
+			$( ".char[data-status='alive']").each(function( index, element ) {
 
 			  	var top = $(element).position().top,
 			  		left = $(element).position().left,
 			  		positionChangeTop = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove,
 					positionChangeLeft = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove;
+
+				if ($(this).attr("data-target-moving") == true) {
+
+					if ($(this).attr("data-target-top") == top && $(this).attr("data-target-left") == left) {
+						$(this).attr("data-target-moving") == false;
+					}
+
+					else {
+
+						
+						
+					}
+
+				}
+
+				else if ($(this).attr("data-target-moving") == false) {
+
+					var positionNewTop = Math.floor(Math.random() * (MaxPosition - minMove + 1)) + minMove, 
+						positionNewLeft = Math.floor(Math.random() * (MaxPosition - minMove + 1)) + minMove;
+
+					console.log(positionNewTop);
+					console.log(positionNewLeft);
+
+					$(this).attr("data-target-top", positionNewTop);
+					$(this).attr("data-target-left", positionNewLeft);
+
+				}
 			  	
 			  	if (top + positionChangeTop >= minPosition && top + positionChangeTop <= MaxPosition) {
 		  			$(element).css("top", top + positionChangeTop);
@@ -57,6 +84,7 @@ $(function() {
 		  		}
 
 			});
+
 		}
 
 	};
@@ -163,12 +191,12 @@ $(function() {
 			var combatantOrderID = combatantList[combatantListArrayIndex]['id'],
 				combatantOrderCalc  = combatantList[combatantListArrayIndex]['dexterity'] * combatantList[combatantListArrayIndex]['energy'] * (Math.random() * (0.5 - 1.5) + 1.5).toFixed(1);
 
-			combatantList[combatantListArrayIndex] = {"data": combatantListArrayElement,"speed": combatantOrderCalc};
+			combatantList[combatantListArrayIndex] = {"data": combatantListArrayElement,"turn": combatantOrderCalc};
 
 		});
 
 		combatantList.sort(function(a, b) { 
-		    return parseFloat(b.speed - a.speed); 
+		    return parseFloat(b.turn - a.turn); 
 		});
 
 		console.log(combatantList);
@@ -247,7 +275,7 @@ $(function() {
 
 
 			//console.log(popupOrder[popupOrderArrayIndex]['id']);
-			//console.log(popupOrder[popupOrderArrayIndex]['speed']);
+			//console.log(popupOrder[popupOrderArrayIndex]['turn']);
 
 		});
 
@@ -320,6 +348,6 @@ $(function() {
 		}
 		else {
 		}
-	}, 1000);
+	}, 2000);
 
 });

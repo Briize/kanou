@@ -2375,8 +2375,8 @@ footer p {
   color: #FFFFFF;
 }
 #container {
-  height: 200px;
-  width: 200px;
+  height: 400px;
+  width: 400px;
   margin: 0 auto;
   float: none;
   position: relative;
@@ -2415,6 +2415,9 @@ footer p {
 #add_combatants #add_combatants-section .combatant .combatant_image .combatant_image_container img {
   width: 100%;
   height: 100%;
+}
+#add_combatants #add_combatants-section .combatant .combatant_image .combatant_image_input {
+  display: flex;
 }
 #add_combatants #add_combatants-section #additional_combatant {
   position: relative;

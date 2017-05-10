@@ -1,4 +1,4 @@
-<?php include 'assets/php/header.php'; ?>
+<?php include "assets/php/header.php"; ?>
 
 <main class="main" id="add_combatants">
 
@@ -22,10 +22,10 @@
 
 						</div>
 
-						<div class="combatant_image_inputs">
+						<div class="combatant_image_input">
 							
-							<input class="combatant_image_inputs_input" type="text" name="combatant_image_input" placeholder="Image URL">
-							<button class="combatant_image_inputs_button" type="button">Update Image</button>
+							<input class="combatant_image_input_input" type="text" name="combatant_image_input" placeholder="Image URL">
+							<button class="combatant_image_input_button" type="button"><span class="fa fa-check"></span></button>
 
 						</div>						
 
@@ -54,26 +54,24 @@
 						</div>
 
 						<div class="combatant_data_stats">
-
-							<label>Strength</label>
-							<div class="strength"></div>
-
-							<label>Dexterity</label>
-							<div class="dexterity"></div>
-
-							<label>Constitution</label>
-							<div class="constitution"></div>
-
-							<label>Intelligence</label>
-							<div class="intelligence"></div>
-
-							<label>Wisdom</label>
-							<div class="wisdom"></div>
-
-							<label>Charisma</label>
-							<div class="charisma"></div>
-			
-						</div>
+				            <select>
+				                <option data-id="1"></option>
+				                <option data-id="2"></option>
+				                <option data-id="3"></option>
+				                <option data-id="4"></option>
+				                <option data-id="5"></option>
+				                <option data-id="6"></option>
+				                <option data-id="7"></option>
+				                <option data-id="8"></option>
+				                <option data-id="9"></option>
+				                <option data-id="10"></option>
+				                <option data-id="11"></option>
+				                <option data-id="12"></option>
+				                <option data-id="13"></option>
+				                <option data-id="14"></option>
+				                <option data-id="15"></option>
+				            </select>
+				        </div>
 
 
 					</div>
@@ -92,4 +90,4 @@
 	
 </main>
 
-<?php include 'assets/php/footer.php'; ?>
+<?php include "assets/php/footer.php"; ?>
