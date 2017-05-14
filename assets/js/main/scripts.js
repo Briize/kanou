@@ -6,8 +6,8 @@ $(function() {
 
 	var minPosition = 0, // Minimum position the combatants can be, both x and y axis, may change in future
   		MaxPosition = 390, // Maximum position the combatants can be, both x and y axis, may change in future
-  		minMove = -10, // Combatants can move 10px in either direction
-  		maxMove = 10, // Combatants can move 10px in either direction
+  		minMove = 5, // Combatants can move 10px in either direction
+  		maxMove = 15, // Combatants can move 10px in either direction
   		encounterCheck = false, // Have combatants encountered each other?
   		totalMoves = 1, // How many moves have happened?
   		index; // Index for combatants
@@ -31,7 +31,7 @@ $(function() {
 
 	getCombatants();
 
-	function moveChar(callback) {
+	function moveChar() {
 
 		$( ".char[data-status='alive']").each(function( index, element ) {
 
@@ -47,23 +47,99 @@ $(function() {
 			  	var top = $(element).position().top,
 			  		left = $(element).position().left,
 			  		positionChangeTop = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove,
-					positionChangeLeft = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove;
+					positionChangeLeft = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove,
+					targetTop = $(element).attr("data-target-top"),
+					targetLeft = $(element).attr("data-target-left");
 
-				if ($(this).attr("data-target-moving") == true) {
+				if ($(element).data("target-moving") == true) {
 
-					if ($(this).attr("data-target-top") == top && $(this).attr("data-target-left") == left) {
-						$(this).attr("data-target-moving") == false;
+					if (targetTop == top && targetLeft == left) {
+						$(element).data("target-moving", false);
+
+						console.log("At point");
 					}
 
 					else {
 
-						
+						if (targetTop > top) {
+
+							if (targetTop - 15 > top) {
+
+								$(element).css("top", top + positionChangeTop);
+
+							}
+
+							else {
+
+								$(element).css("top", targetTop + "px");
+
+							}
+
+						}
+
+						else if (targetTop < top) {
+
+							if (targetTop + 15 < top) {
+
+								$(element).css("top", top - positionChangeTop);
+
+							}
+
+							else {
+
+								$(element).css("top", targetTop + "px");
+
+							}
+
+						}
+
+						else {
+
+						}
+
+						if (targetLeft > left) {
+
+							if (targetLeft - 15 > left ) {
+
+								$(element).css("left", left + positionChangeLeft);
+
+							}
+
+							else {
+
+								$(element).css("left", targetLeft + "px");
+
+							}
+
+						}
+
+						else if (targetLeft < left) {
+
+							if (targetLeft + 15 < left ) {
+
+								$(element).css("left", left - positionChangeLeft);
+
+							}
+
+							else {
+
+								$(element).css("left", targetLeft + "px");
+
+							}
+
+						}
+
+						else {
+							
+						}
+
+						console.log("Moving");
 						
 					}
 
 				}
 
-				else if ($(this).attr("data-target-moving") == false) {
+				else if ($(element).data("target-moving") == false) {
 
 					var positionNewTop = Math.floor(Math.random() * (MaxPosition - minMove + 1)) + minMove, 
 						positionNewLeft = Math.floor(Math.random() * (MaxPosition - minMove + 1)) + minMove;
@@ -71,17 +147,21 @@ $(function() {
 					console.log(positionNewTop);
 					console.log(positionNewLeft);
 
-					$(this).attr("data-target-top", positionNewTop);
-					$(this).attr("data-target-left", positionNewLeft);
+					$(element).attr("data-target-top", positionNewTop);
+					$(element).attr("data-target-left", positionNewLeft);
+
+					$(element).data("target-moving", true);
+
+					console.log("moving again");
 
 				}
 			  	
-			  	if (top + positionChangeTop >= minPosition && top + positionChangeTop <= MaxPosition) {
+			  	/*if (top + positionChangeTop >= minPosition && top + positionChangeTop <= MaxPosition) {
 		  			$(element).css("top", top + positionChangeTop);
 			  	}
 			  	if (left + positionChangeLeft >= minPosition && left + positionChangeLeft <= MaxPosition) {
 		  			$(element).css("left", left + positionChangeLeft);
-		  		}
+		  		}*/
 
 			});
 
@@ -348,6 +428,6 @@ $(function() {
 		}
 		else {
 		}
-	}, 2000);
+	}, 1000);
 
 });
