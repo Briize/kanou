@@ -21,7 +21,7 @@ $(function() {
 		
 		while (combatantCounter < combatantNumbers) {
 
-			$("#container").append("<div class='char' id='char" + combatantCounter + "' style='top: " +  Math.floor(Math.random()*(390-0+1)+0) + "px; left: " +  Math.floor(Math.random()*(390-0+1)+0) + "px; background-color: red;' data-index='" + combatantCounter + "' data-name='" + combatants[combatantCounter]["name"] + "' data-status='" + combatants[combatantCounter]["status"] + "' data-moved='false' data-target-moving='false' data-target-top='0' data-target-left='0'>" + combatantCounter + "</div>");
+			$("#container").append("<div class='char' id='char" + combatantCounter + "' style='top: " +  Math.floor(Math.random()*(390-0+1)+0) + "px; left: " +  Math.floor(Math.random()*(390-0+1)+0) + "px; background-color: red;' data-index='" + combatantCounter + "' data-name='" + combatants[combatantCounter]["name"] + "' data-status='" + combatants[combatantCounter]["status"] + "' data-moved='false' data-target-moving='false' data-target-top='0' data-target-left='0'></div>");
 			
 			combatantCounter++;
 			
@@ -48,8 +48,8 @@ $(function() {
 			  		left = $(element).position().left,
 			  		positionChangeTop = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove,
 					positionChangeLeft = Math.floor(Math.random() * (maxMove - minMove + 1)) + minMove,
-					targetTop = $(element).attr("data-target-top"),
-					targetLeft = $(element).attr("data-target-left");
+					targetTop = parseInt($(element).attr("data-target-top")),
+					targetLeft = parseInt($(element).attr("data-target-left"));
 
 				if ($(element).data("target-moving") == true) {
 
@@ -67,11 +67,15 @@ $(function() {
 
 								$(element).css("top", top + positionChangeTop);
 
+								console.log("targetTop - 15 > top");
+
 							}
 
 							else {
 
 								$(element).css("top", targetTop + "px");
+
+								console.log("targetTop > else");
 
 							}
 
@@ -83,11 +87,17 @@ $(function() {
 
 								$(element).css("top", top - positionChangeTop);
 
+								console.log("targetTop + 15 < top");
+
+								console.log(targetTop);
+
 							}
 
 							else {
 
 								$(element).css("top", targetTop + "px");
+
+								console.log("targetTop < else");
 
 							}
 
