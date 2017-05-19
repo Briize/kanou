@@ -6,8 +6,8 @@ $(function() {
 
 	var minPosition = 0, // Minimum position the combatants can be, both x and y axis, may change in future
   		MaxPosition = 390, // Maximum position the combatants can be, both x and y axis, may change in future
-  		minMove = 5, // Combatants can move 10px in either direction
-  		maxMove = 15, // Combatants can move 10px in either direction
+  		minMove = 0, // Combatants can move 10px in either direction
+  		maxMove = 5, // Combatants can move 10px in either direction
   		encounterCheck = false, // Have combatants encountered each other?
   		totalMoves = 1, // How many moves have happened?
   		index; // Index for combatants
@@ -63,11 +63,11 @@ $(function() {
 
 						if (targetTop > top) {
 
-							if (targetTop - 15 > top) {
+							if (targetTop - 5 > top) {
 
 								$(element).css("top", top + positionChangeTop);
 
-								console.log("targetTop - 15 > top");
+								console.log("targetTop - 5 > top");
 
 							}
 
@@ -83,11 +83,11 @@ $(function() {
 
 						else if (targetTop < top) {
 
-							if (targetTop + 15 < top) {
+							if (targetTop + 5 < top) {
 
 								$(element).css("top", top - positionChangeTop);
 
-								console.log("targetTop + 15 < top");
+								console.log("targetTop + 5 < top");
 
 								console.log(targetTop);
 
@@ -109,7 +109,7 @@ $(function() {
 
 						if (targetLeft > left) {
 
-							if (targetLeft - 15 > left ) {
+							if (targetLeft - 5 > left ) {
 
 								$(element).css("left", left + positionChangeLeft);
 
@@ -125,7 +125,7 @@ $(function() {
 
 						else if (targetLeft < left) {
 
-							if (targetLeft + 15 < left ) {
+							if (targetLeft + 5 < left ) {
 
 								$(element).css("left", left - positionChangeLeft);
 
