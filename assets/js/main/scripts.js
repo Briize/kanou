@@ -183,7 +183,7 @@ $(function() {
 	function contact(contactChar, contactOthers) {
 
 	    var $contactChar = $(contactChar),
-	    	visionBonus = 0,
+	    	visionBonus = 6,
 	    	contactCharAxis = $contactChar.offset(),
 	    	contactChar_x = [contactCharAxis.left - visionBonus, contactCharAxis.left + $contactChar.outerWidth() + visionBonus], // Get x axis
 	    	contactChar_y = [contactCharAxis.top - visionBonus, contactCharAxis.top + $contactChar.outerHeight() + visionBonus], // Get y axis

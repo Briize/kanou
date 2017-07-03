@@ -2384,13 +2384,14 @@ footer p {
 }
 #container .char {
   content: "";
-  height: 10px;
-  width: 10px;
+  height: 4px;
+  width: 4px;
   position: absolute;
   transition: 1s linear;
   -moz-transition: 1s linear;
   -webkit-transition: 1s linear;
   -o-transition: 1s linear;
+  border-radius: 4px;
 }
 #container .char[data-status='dead'] {
   background: grey !important;
