@@ -16,12 +16,16 @@ $(function() {
   	function getCombatants() {
 		
 		var combatantNumbers = combatants.length;
-		combatantCounter = 0;	
+			combatantCounter = 0;
+		
 		
 		
 		while (combatantCounter < combatantNumbers) {
 
-			$("#container").append("<div class='char' id='char" + combatantCounter + "' style='top: " +  Math.floor(Math.random()*(390-0+1)+0) + "px; left: " +  Math.floor(Math.random()*(390-0+1)+0) + "px; background-color: red;' data-index='" + combatantCounter + "' data-name='" + combatants[combatantCounter]["name"] + "' data-status='" + combatants[combatantCounter]["status"] + "' data-moved='false' data-target-moving='false' data-target-top='0' data-target-left='0'></div>");
+			var randomTop = /*Math.floor(Math.random()*(390-0+1)+0)*/1,
+				randomLeft = /*Math.floor(Math.random()*(390-0+1)+0)*/1;
+
+			$("#container").append("<div class='char' id='char" + combatantCounter + "' style='top: " +  randomTop + "px; left: " +  randomLeft + "px; background-color: red;' data-index='" + combatantCounter + "' data-name='" + combatants[combatantCounter]["name"] + "' data-status='" + combatants[combatantCounter]["status"] + "' data-moved='false' data-target-moving='false' data-target-top='0' data-target-left='0'></div>");
 			
 			combatantCounter++;
 			
@@ -340,8 +344,8 @@ $(function() {
 			if (combatOption < attackChance) {
 				// Attack
 
-				combatPopupAttack(popupList, popupListArrayIndex, popupListArrayElement);
 				console.log("attack");
+				combatPopupAttack(popupList, popupListArrayIndex, popupListArrayElement);
 			}
 
 			else if (combatOption < attackChance + 1 && combatOption < attackChance + escapeChance ) {
@@ -390,18 +394,18 @@ $(function() {
 
 		});
 
-		console.log(combatPopupListCombatant);
+		//console.log(combatPopupListCombatant);
 
 		var targetRandomiser = parseInt((Math.random() * (targets.length - 1 + 1)), 10) + 1;
 			target = targets[targetRandomiser - 1];
 
-		console.log(targetRandomiser);
-		console.log(target);
+		//console.log(targetRandomiser);
+		console.log(target.data.name);
 
 		var weapon = combatPopupListCombatant["data"]["weapons"][Math.floor(Math.random()*combatPopupListCombatant["data"]["weapons"].length)];
 
-		console.log(combatPopupListCombatant["data"]["weapons"].length);
-		console.log(weapon);
+		//console.log(combatPopupListCombatant["data"]["weapons"].length);
+		console.log(weapon.weapon);
 
 	}
 
