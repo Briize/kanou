@@ -333,57 +333,66 @@ $(function() {
 
 		$("#popup").removeClass("hidden");
 
-		$(popupList).each(function(popupListArrayIndex, popupListArrayElement) {
+		$(".next").on( "click", function() {
 
-			var combatOption = Math.floor((Math.random() * 100) + 1),
-				attackChance = 100,
-				escapeChance = 25,
-				surrenderChance = 25,
-				truceChance =  25;
+			$(popupList).each(function(popupListArrayIndex, popupListArrayElement) {
 
-			if (combatOption < attackChance) {
-				// Attack
+				var combatOption = Math.floor((Math.random() * 100) + 1),
+					attackChance = 100,
+					escapeChance = 25,
+					surrenderChance = 25,
+					truceChance =  25;
 
-				console.log("attack");
-				combatPopupAttack(popupList, popupListArrayIndex, popupListArrayElement);
-			}
+				if (combatOption < attackChance) {
+					// Attack
 
-			else if (combatOption < attackChance + 1 && combatOption < attackChance + escapeChance ) {
-				// Escape
-				combatPopupEscape(popupList, popupListArrayIndex, popupListArrayElement);
-				console.log("escape");
-			}
+					console.log("attack");
+					
+					var initiator = combatPopupAttack(popupList, popupListArrayIndex, popupListArrayElement);
+				}
 
-			else if (combatOption < attackChance + escapeChance + 1 && combatOption < 100) {
-				// Surrender
-				combatPopupSurrender(popupList, popupListArrayIndex, popupListArrayElement);
-				console.log("surrender");
-			}
+				else if (combatOption < attackChance + 1 && combatOption < attackChance + escapeChance ) {
+					// Escape
+					combatPopupEscape(popupList, popupListArrayIndex, popupListArrayElement);
+					console.log("escape");
+				}
 
-			else if (combatOption < attackChance + escapeChance + surrenderChance + 1 && combatOption < 100) {
-				// Truce
-				combatPopupTruce(popupList, popupListArrayIndex, popupListArrayElement);
-				console.log("truce");
-			}
+				else if (combatOption < attackChance + escapeChance + 1 && combatOption < 100) {
+					// Surrender
+					combatPopupSurrender(popupList, popupListArrayIndex, popupListArrayElement);
+					console.log("surrender");
+				}
 
+				else if (combatOption < attackChance + escapeChance + surrenderChance + 1 && combatOption < 100) {
+					// Truce
+					combatPopupTruce(popupList, popupListArrayIndex, popupListArrayElement);
+					console.log("truce");
+				}
 
+				console.log(initiator[0]["data"]["name"]);
+				console.log(initiator[1][0]["data"]["name"]);
 
-			//console.log(popupOrder[popupOrderArrayIndex]['id']);
-			//console.log(popupOrder[popupOrderArrayIndex]['turn']);
+				/*$(".popup_content").append("<p>" + popupList[popupCounter]['name'] + " " + popupList[popupCounter]['health'] + "</p>");*/
+
+				//console.log(popupOrder[popupOrderArrayIndex]['id']);
+				//console.log(popupOrder[popupOrderArrayIndex]['turn']);
+
+			});
 
 		});
 
-		$(".next").on( "click", function() {
+		/*$(".next").on( "click", function() {
 		  	for (popupCounter = 0; popupCounter < popupList.length; popupCounter++) { 
 			    $(".popup_content").append("<p>" + popupList[popupCounter]['name'] + " " + popupList[popupCounter]['health'] + "</p>");
 			}
-		});
+		});*/
 
 	}
 
 	function combatPopupAttack(combatPopupList, combatPopupListIndex, combatPopupListCombatant) {
 
-		var targets = [];
+		var targets = [],
+			initiator;
 
 		$(combatPopupList).each(function(combatPopupListArrayTargetIndex, combatPopupListArrayTargetElement) {
 
@@ -392,20 +401,26 @@ $(function() {
 				targets.push(combatPopupListArrayTargetElement);
 			}
 
+			else {
+ 				initiator = combatPopupListArrayTargetElement;
+			}
+
 		});
 
 		//console.log(combatPopupListCombatant);
 
-		var targetRandomiser = parseInt((Math.random() * (targets.length - 1 + 1)), 10) + 1;
+		var targetRandomiser = parseInt((Math.random() * (targets.length - 1 + 1)), 10) + 1,
 			target = targets[targetRandomiser - 1];
 
 		//console.log(targetRandomiser);
-		console.log(target.data.name);
+		//console.log(target.data.name);
 
 		var weapon = combatPopupListCombatant["data"]["weapons"][Math.floor(Math.random()*combatPopupListCombatant["data"]["weapons"].length)];
 
 		//console.log(combatPopupListCombatant["data"]["weapons"].length);
-		console.log(weapon.weapon);
+		//console.log(weapon.weapon);
+
+		return [initiator, targets];
 
 	}
 
