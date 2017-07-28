@@ -13,8 +13,8 @@ Fight
 
 Who gets the first attack? (General stat check)
 What do they use to attack? (Weapon attack)
-Do they hit? (General stat check)
 Where do they aim? (Randomiser)
+Do they hit? (General stat check)
 How much damage do they cause? (Weapon attack and general)
 Do they kill? (Health check)
 Do they knock out? (Health check)
