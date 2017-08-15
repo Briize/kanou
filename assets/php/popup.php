@@ -6,6 +6,8 @@
 			<p class="next">Next</p>
 		</div>
 
+		<div class="popup_events"></div>
+
 	</div>
 
 </div>

@@ -1,9 +1,5 @@
 $(function() {
 
-	//console.log(combatants2);
-
-	//console.log(combatants2.batter2[0].charisma);
-
 	var minPosition = 0, // Minimum position the combatants can be, both x and y axis, may change in future
   		MaxPosition = 390, // Maximum position the combatants can be, both x and y axis, may change in future
   		minMove = 0, // Combatants can move 10px in either direction
@@ -17,8 +13,6 @@ $(function() {
 		
 		var combatantNumbers = combatants.length;
 			combatantCounter = 0;
-		
-		
 		
 		while (combatantCounter < combatantNumbers) {
 
@@ -333,53 +327,67 @@ $(function() {
 
 		$("#popup").removeClass("hidden");
 
+		console.log(popupList.length);
+
+		var numberOfCombatants = popupList.length,
+			combatantTurn = 0;
+
 		$(".next").on( "click", function() {
 
-			$(popupList).each(function(popupListArrayIndex, popupListArrayElement) {
+			//$(popupList[combatantTurn]).each(function(popupListArrayIndex, popupListArrayElement) {
 
-				var combatOption = Math.floor((Math.random() * 100) + 1),
-					attackChance = 100,
-					escapeChance = 25,
-					surrenderChance = 25,
-					truceChance =  25;
+				if (combatantTurn <= numberOfCombatants) {
 
-				if (combatOption < attackChance) {
-					// Attack
+					var combatOption = Math.floor((Math.random() * 100) + 1),
+						attackChance = 100,
+						escapeChance = 25,
+						surrenderChance = 25,
+						truceChance =  25;
 
-					console.log("attack");
-					
-					var encounterData = combatPopupAttack(popupList, popupListArrayIndex, popupListArrayElement);
+					if (combatOption < attackChance) {
+						// Attack
 
-					console.log(encounterData[0]["data"]["name"]);
-					console.log(encounterData[2][0]["data"]["name"]);
+						console.log("attack");
+						
+						var encounterData = combatPopupAttack(popupList, combatantTurn, popupList[combatantTurn]),
+							attacker = encounterData[0]["data"],
+							weapon = encounterData[1],
+							recipient = encounterData[2]["data"];
+
+						$(".popup_events").append("<p>" + attacker["name"] + " attacks " + recipient["name"] + " with a " + weapon["weapon"] + "</p>");
+
+					}
+
+					else if (combatOption < attackChance + 1 && combatOption < attackChance + escapeChance ) {
+						// Escape
+						combatPopupEscape(popupList, popupListArrayIndex, popupListArrayElement);
+						console.log("escape");
+					}
+
+					else if (combatOption < attackChance + escapeChance + 1 && combatOption < 100) {
+						// Surrender
+						combatPopupSurrender(popupList, popupListArrayIndex, popupListArrayElement);
+						console.log("surrender");
+					}
+
+					else if (combatOption < attackChance + escapeChance + surrenderChance + 1 && combatOption < 100) {
+						// Truce
+						combatPopupTruce(popupList, popupListArrayIndex, popupListArrayElement);
+						console.log("truce");
+					}
+
+					/*$(".popup_content").append("<p>" + popupList[popupCounter]['name'] + " " + popupList[popupCounter]['health'] + "</p>");*/
+
+					//console.log(popupOrder[popupOrderArrayIndex]['id']);
+					//console.log(popupOrder[popupOrderArrayIndex]['turn']);
+
+					combatantTurn++;
+
 				}
-
-				else if (combatOption < attackChance + 1 && combatOption < attackChance + escapeChance ) {
-					// Escape
-					combatPopupEscape(popupList, popupListArrayIndex, popupListArrayElement);
-					console.log("escape");
-				}
-
-				else if (combatOption < attackChance + escapeChance + 1 && combatOption < 100) {
-					// Surrender
-					combatPopupSurrender(popupList, popupListArrayIndex, popupListArrayElement);
-					console.log("surrender");
-				}
-
-				else if (combatOption < attackChance + escapeChance + surrenderChance + 1 && combatOption < 100) {
-					// Truce
-					combatPopupTruce(popupList, popupListArrayIndex, popupListArrayElement);
-					console.log("truce");
-				}
-
-				/*$(".popup_content").append("<p>" + popupList[popupCounter]['name'] + " " + popupList[popupCounter]['health'] + "</p>");*/
-
-				//console.log(popupOrder[popupOrderArrayIndex]['id']);
-				//console.log(popupOrder[popupOrderArrayIndex]['turn']);
 
 			});
 
-		});
+		//});
 
 		/*$(".next").on( "click", function() {
 		  	for (popupCounter = 0; popupCounter < popupList.length; popupCounter++) { 
@@ -439,19 +447,19 @@ $(function() {
 
 		});
 
-		console.log(weaponArray);
-
-		var initiatorWeapon = combatPopupListCombatant["data"]["weapons"][Math.floor(Math.random()*combatPopupListCombatant["data"]["weapons"].length)],
+		var initiatorWeapon = weaponArray[Math.floor(Math.random()*weaponArray.length)],
 			weapon = initiatorWeapon.weapon,
-			damage = initiatorWeapon.damage;
+			damage = initiatorWeapon.damage,
+			modifier = initiatorWeapon.modifier,
+			modifierVal = combatPopupListCombatant["data"][modifier],
+			damageTotal = damage + modifierVal;
 
-		console.log(combatPopupListCombatant["data"]["weapons"].length)
 
-		//console.log(combatPopupListCombatant["data"]["weapons"].length);
-		console.log(weapon);
-		console.log(damage);
+		var targetHealth = target.data.health - damageTotal;
 
-		return [initiator, initiatorWeapon, targets];
+		target.data.health = targetHealth;
+
+		return [initiator, initiatorWeapon, target];
 
 	}
 
