@@ -348,7 +348,10 @@ $(function() {
 
 					console.log("attack");
 					
-					var initiator = combatPopupAttack(popupList, popupListArrayIndex, popupListArrayElement);
+					var encounterData = combatPopupAttack(popupList, popupListArrayIndex, popupListArrayElement);
+
+					console.log(encounterData[0]["data"]["name"]);
+					console.log(encounterData[2][0]["data"]["name"]);
 				}
 
 				else if (combatOption < attackChance + 1 && combatOption < attackChance + escapeChance ) {
@@ -368,9 +371,6 @@ $(function() {
 					combatPopupTruce(popupList, popupListArrayIndex, popupListArrayElement);
 					console.log("truce");
 				}
-
-				console.log(initiator[0]["data"]["name"]);
-				console.log(initiator[1][0]["data"]["name"]);
 
 				/*$(".popup_content").append("<p>" + popupList[popupCounter]['name'] + " " + popupList[popupCounter]['health'] + "</p>");*/
 
@@ -392,7 +392,8 @@ $(function() {
 	function combatPopupAttack(combatPopupList, combatPopupListIndex, combatPopupListCombatant) {
 
 		var targets = [],
-			initiator;
+			initiator,
+			weaponArray = [];
 
 		$(combatPopupList).each(function(combatPopupListArrayTargetIndex, combatPopupListArrayTargetElement) {
 
@@ -415,12 +416,42 @@ $(function() {
 		//console.log(targetRandomiser);
 		//console.log(target.data.name);
 
-		var weapon = combatPopupListCombatant["data"]["weapons"][Math.floor(Math.random()*combatPopupListCombatant["data"]["weapons"].length)];
+		combatPopupListCombatant["data"]["weapons"].sort(function (a, b) {
+			return parseFloat(b.priority) - parseFloat(a.priority);
+		});
+
+		$(combatPopupListCombatant["data"]["weapons"]).each(function(combatPopupListCombatantIndex, combatPopupListCombatantElement) {
+
+			if (weaponArray.length === 0) {
+					
+				weaponArray.push(combatPopupListCombatantElement);
+
+			}
+			
+			else {
+
+				if (weaponArray[weaponArray.length - 1].priority == combatPopupListCombatantElement.priority) {
+					weaponArray.push(combatPopupListCombatantElement);
+
+				}
+
+			}
+
+		});
+
+		console.log(weaponArray);
+
+		var initiatorWeapon = combatPopupListCombatant["data"]["weapons"][Math.floor(Math.random()*combatPopupListCombatant["data"]["weapons"].length)],
+			weapon = initiatorWeapon.weapon,
+			damage = initiatorWeapon.damage;
+
+		console.log(combatPopupListCombatant["data"]["weapons"].length)
 
 		//console.log(combatPopupListCombatant["data"]["weapons"].length);
-		//console.log(weapon.weapon);
+		console.log(weapon);
+		console.log(damage);
 
-		return [initiator, targets];
+		return [initiator, initiatorWeapon, targets];
 
 	}
 

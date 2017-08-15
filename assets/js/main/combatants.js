@@ -19,6 +19,7 @@ var combatants = [
 		"deception": 10,
 		"bravery": 10,
 		"intelligence": 10,
+		"luck": 1,
 		"health": 100,
 		"hunger": 100,
 		"thirst": 100,
@@ -27,10 +28,10 @@ var combatants = [
 		"injuries": [""], //Left Eye, Right Eye, Left Ear, Right Ear, Nose, Mouth, Face, Neck, Left Shoulder, Right Shoulder, Chest, Stomach, Left Arm, Right Arm, Left Hand, Right Hand, Left Leg, Right Leg, Left Foot, Right Foot
 		"weapons": [
 		{	"weapon": "Head", "priority": 1, "ranged": false, "ammunition": 0, "thrown": false, "damage": 5, "durability": 10 },
-		{ 	"weapon": "Left Arm", "priority" : 2 , "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
-		{ 	"weapon": "Right Arm", "priority" : 2, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
+		{ 	"weapon": "Left Arm", "priority" : 3 , "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
+		{ 	"weapon": "Right Arm", "priority" : 5, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
 		{ 	"weapon": "Left Leg", "priority" : 2, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
-		{ 	"weapon": "Right Arm", "priority" : 2, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  }
+		{ 	"weapon": "Right Leg", "priority" : 5, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  }
 		],
 		"relationships": [""],
 		"pacts": [""],
@@ -58,6 +59,7 @@ var combatants = [
 		"deception": 10,
 		"bravery": 10,
 		"intelligence": 10,
+		"luck": 1,
 		"health": 100,
 		"hunger": 100,
 		"thirst": 100,
@@ -66,10 +68,10 @@ var combatants = [
 		"injuries": [""], //Left Eye, Right Eye, Left Ear, Right Ear, Nose, Mouth, Face, Neck, Left Shoulder, Right Shoulder, Chest, Stomach, Left Arm, Right Arm, Left Hand, Right Hand, Left Leg, Right Leg, Left Foot, Right Foot
 		"weapons": [
 		{	"weapon": "Head", "priority": 1, "ranged": false, "ammunition": 0, "thrown": false, "damage": 5, "durability": 10 },
-		{ 	"weapon": "Left Arm", "priority" : 2 , "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
-		{ 	"weapon": "Right Arm", "priority" : 2, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
-		{ 	"weapon": "Left Leg", "priority" : 2, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
-		{ 	"weapon": "Right Arm", "priority" : 2, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  }
+		{ 	"weapon": "Left Arm", "priority" : 3 , "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
+		{ 	"weapon": "Right Arm", "priority" : 5, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
+		{ 	"weapon": "Left Leg", "priority" : 4, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  },
+		{ 	"weapon": "Right Leg", "priority" : 5, "ranged": false, "ammunition": 0, "thrown": false, "damage": 10, "durability": 15  }
 		],
 		"relationships": [""],
 		"pacts": [""],
