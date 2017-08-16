@@ -286,8 +286,6 @@ $(function() {
 		combatantList.sort(function(a, b) { 
 		    return parseFloat(b.turn - a.turn); 
 		});
-
-		console.log(combatantList);
 		
 		/*if (combatantListDetailsArray.length === 2) {
 
@@ -327,16 +325,18 @@ $(function() {
 
 		$("#popup").removeClass("hidden");
 
-		console.log(popupList.length);
-
-		var numberOfCombatants = popupList.length,
+		var numberOfCombatants = popupList.length - 1,
 			combatantTurn = 0;
 
 		$(".next").on( "click", function() {
 
-			//$(popupList[combatantTurn]).each(function(popupListArrayIndex, popupListArrayElement) {
+			console.log(combatants);
 
-				if (combatantTurn <= numberOfCombatants) {
+			if (combatantTurn <= numberOfCombatants) {
+
+				if (popupList[combatantTurn]["data"]["status"] == "alive") {
+
+					console.log("no loop");
 
 					var combatOption = Math.floor((Math.random() * 100) + 1),
 						attackChance = 100,
@@ -352,9 +352,13 @@ $(function() {
 						var encounterData = combatPopupAttack(popupList, combatantTurn, popupList[combatantTurn]),
 							attacker = encounterData[0]["data"],
 							weapon = encounterData[1],
-							recipient = encounterData[2]["data"];
+							recipient = encounterData[2]["data"],
+							damage = encounterData[3],
+							status = encounterData[4];
 
-						$(".popup_events").append("<p>" + attacker["name"] + " attacks " + recipient["name"] + " with a " + weapon["weapon"] + "</p>");
+						$(".popup_events").append("<p>" + attacker["name"] + " attacks " + recipient["name"] + " with a " + weapon["weapon"] + " doing " + damage + " damage</p>");
+						$(".popup_events").append("<p>" + recipient["name"] + " has " + recipient["health"] + " health</p>")
+						$(".popup_events").append("<p>" + recipient["name"] + " is " + status + "</p>");
 
 					}
 
@@ -381,11 +385,76 @@ $(function() {
 					//console.log(popupOrder[popupOrderArrayIndex]['id']);
 					//console.log(popupOrder[popupOrderArrayIndex]['turn']);
 
-					combatantTurn++;
+				}
+
+				else {
+
+					console.log("they're out");
 
 				}
 
-			});
+			}
+
+			else {
+
+				console.log("loop");
+
+				combatantTurn = 0;
+
+				var combatOption = Math.floor((Math.random() * 100) + 1),
+					attackChance = 100,
+					escapeChance = 25,
+					surrenderChance = 25,
+					truceChance =  25;
+
+				if (combatOption < attackChance) {
+					// Attack
+
+					console.log("attack");
+					
+					var encounterData = combatPopupAttack(popupList, combatantTurn, popupList[combatantTurn]),
+						attacker = encounterData[0]["data"],
+						weapon = encounterData[1],
+						recipient = encounterData[2]["data"],
+						damage = encounterData[3],
+						status = encounterData[4];
+
+					$(".popup_events").append("<p>" + attacker["name"] + " attacks " + recipient["name"] + " with a " + weapon["weapon"] + " doing " + damage + " damage</p>");
+					$(".popup_events").append("<p>" + recipient["name"] + " has " + recipient["health"] + " health</p>")
+					$(".popup_events").append("<p>" + recipient["name"] + " is " + status + "</p>");
+
+				}
+
+				else if (combatOption < attackChance + 1 && combatOption < attackChance + escapeChance ) {
+					// Escape
+					combatPopupEscape(popupList, popupListArrayIndex, popupListArrayElement);
+					console.log("escape");
+				}
+
+				else if (combatOption < attackChance + escapeChance + 1 && combatOption < 100) {
+					// Surrender
+					combatPopupSurrender(popupList, popupListArrayIndex, popupListArrayElement);
+					console.log("surrender");
+				}
+
+				else if (combatOption < attackChance + escapeChance + surrenderChance + 1 && combatOption < 100) {
+					// Truce
+					combatPopupTruce(popupList, popupListArrayIndex, popupListArrayElement);
+					console.log("truce");
+				}
+
+				/*$(".popup_content").append("<p>" + popupList[popupCounter]['name'] + " " + popupList[popupCounter]['health'] + "</p>");*/
+
+				//console.log(popupOrder[popupOrderArrayIndex]['id']);
+				//console.log(popupOrder[popupOrderArrayIndex]['turn']);
+
+			}
+
+			combatantTurn++;
+
+		});
+
+		
 
 		//});
 
@@ -452,14 +521,31 @@ $(function() {
 			damage = initiatorWeapon.damage,
 			modifier = initiatorWeapon.modifier,
 			modifierVal = combatPopupListCombatant["data"][modifier],
-			damageTotal = damage + modifierVal;
+			damageTotal = damage + modifierVal,
+			targetHealth = target.data.health - damageTotal,
+			targetStatus = "alive",
+			attackEnd = false;
 
+		if (targetHealth < 21 && targetHealth > 0) {
+			targetStatus = "unconscious";
+		}
 
-		var targetHealth = target.data.health - damageTotal;
+		else if (targetHealth <= 0) {
+			targetStatus = "dead";
+		}
+
+		else {
+			targetStatus = "alive";
+		}
+
+		//if 
+
+		console.log(combatPopupList);
 
 		target.data.health = targetHealth;
+		target.data.status = targetStatus;
 
-		return [initiator, initiatorWeapon, target];
+		return [initiator, initiatorWeapon, target, damageTotal, targetStatus, attackEnd];
 
 	}
 
