@@ -65,15 +65,11 @@ $(function() {
 
 								$(element).css("top", top + positionChangeTop);
 
-								console.log("targetTop - 5 > top");
-
 							}
 
 							else {
 
 								$(element).css("top", targetTop + "px");
-
-								console.log("targetTop > else");
 
 							}
 
@@ -85,17 +81,11 @@ $(function() {
 
 								$(element).css("top", top - positionChangeTop);
 
-								console.log("targetTop + 5 < top");
-
-								console.log(targetTop);
-
 							}
 
 							else {
 
 								$(element).css("top", targetTop + "px");
-
-								console.log("targetTop < else");
 
 							}
 
@@ -140,8 +130,6 @@ $(function() {
 						else {
 							
 						}
-
-						console.log("Moving");
 						
 					}
 
@@ -152,15 +140,10 @@ $(function() {
 					var positionNewTop = Math.floor(Math.random() * (MaxPosition - minMove + 1)) + minMove, 
 						positionNewLeft = Math.floor(Math.random() * (MaxPosition - minMove + 1)) + minMove;
 
-					console.log(positionNewTop);
-					console.log(positionNewLeft);
-
 					$(element).attr("data-target-top", positionNewTop);
 					$(element).attr("data-target-left", positionNewLeft);
 
 					$(element).data("target-moving", true);
-
-					console.log("moving again");
 
 				}
 			  	
@@ -326,17 +309,85 @@ $(function() {
 		$("#popup").removeClass("hidden");
 
 		var numberOfCombatants = popupList.length - 1,
-			combatantTurn = 0;
+			combatantTurn = 0,
+			attackStatus = false;
 
 		$(".next").on( "click", function() {
 
-			console.log(combatants);
+			if (attackStatus == false) {
 
-			if (combatantTurn <= numberOfCombatants) {
+				if (combatantTurn <= numberOfCombatants) {
 
-				if (popupList[combatantTurn]["data"]["status"] == "alive") {
+					if (popupList[combatantTurn]["data"]["status"] == "alive") {
 
-					console.log("no loop");
+						console.log("no loop");
+
+						var combatOption = Math.floor((Math.random() * 100) + 1),
+							attackChance = 100,
+							escapeChance = 25,
+							surrenderChance = 25,
+							truceChance =  25;
+
+						if (combatOption < attackChance) {
+							// Attack
+
+							console.log("attack");
+							
+							var encounterData = combatPopupAttack(popupList, combatantTurn, popupList[combatantTurn]),
+								attacker = encounterData[0]["data"],
+								weapon = encounterData[1],
+								recipient = encounterData[2]["data"],
+								damage = encounterData[3],
+								status = encounterData[4];
+							
+							attackStatus = encounterData[5];
+
+							console.log(encounterData[5]);
+
+							$(".popup_events").append("<p>" + attacker["name"] + " attacks " + recipient["name"] + " with a " + weapon["weapon"] + " doing " + damage + " damage</p>");
+							$(".popup_events").append("<p>" + recipient["name"] + " has " + recipient["health"] + " health</p>")
+							$(".popup_events").append("<p>" + recipient["name"] + " is " + status + "</p>");
+
+						}
+
+						else if (combatOption < attackChance + 1 && combatOption < attackChance + escapeChance ) {
+							// Escape
+							combatPopupEscape(popupList, popupListArrayIndex, popupListArrayElement);
+							console.log("escape");
+						}
+
+						else if (combatOption < attackChance + escapeChance + 1 && combatOption < 100) {
+							// Surrender
+							combatPopupSurrender(popupList, popupListArrayIndex, popupListArrayElement);
+							console.log("surrender");
+						}
+
+						else if (combatOption < attackChance + escapeChance + surrenderChance + 1 && combatOption < 100) {
+							// Truce
+							combatPopupTruce(popupList, popupListArrayIndex, popupListArrayElement);
+							console.log("truce");
+						}
+
+						/*$(".popup_content").append("<p>" + popupList[popupCounter]['name'] + " " + popupList[popupCounter]['health'] + "</p>");*/
+
+						//console.log(popupOrder[popupOrderArrayIndex]['id']);
+						//console.log(popupOrder[popupOrderArrayIndex]['turn']);
+
+					}
+
+					else {
+
+						console.log("they're out");
+
+					}
+
+				}
+
+				else {
+
+					console.log("loop");
+
+					combatantTurn = 0;
 
 					var combatOption = Math.floor((Math.random() * 100) + 1),
 						attackChance = 100,
@@ -355,6 +406,10 @@ $(function() {
 							recipient = encounterData[2]["data"],
 							damage = encounterData[3],
 							status = encounterData[4];
+						
+						attackStatus = encounterData[5];
+
+						console.log(encounterData[5]);
 
 						$(".popup_events").append("<p>" + attacker["name"] + " attacks " + recipient["name"] + " with a " + weapon["weapon"] + " doing " + damage + " damage</p>");
 						$(".popup_events").append("<p>" + recipient["name"] + " has " + recipient["health"] + " health</p>")
@@ -387,70 +442,16 @@ $(function() {
 
 				}
 
-				else {
-
-					console.log("they're out");
-
-				}
+				combatantTurn++;
 
 			}
 
 			else {
 
-				console.log("loop");
-
-				combatantTurn = 0;
-
-				var combatOption = Math.floor((Math.random() * 100) + 1),
-					attackChance = 100,
-					escapeChance = 25,
-					surrenderChance = 25,
-					truceChance =  25;
-
-				if (combatOption < attackChance) {
-					// Attack
-
-					console.log("attack");
-					
-					var encounterData = combatPopupAttack(popupList, combatantTurn, popupList[combatantTurn]),
-						attacker = encounterData[0]["data"],
-						weapon = encounterData[1],
-						recipient = encounterData[2]["data"],
-						damage = encounterData[3],
-						status = encounterData[4];
-
-					$(".popup_events").append("<p>" + attacker["name"] + " attacks " + recipient["name"] + " with a " + weapon["weapon"] + " doing " + damage + " damage</p>");
-					$(".popup_events").append("<p>" + recipient["name"] + " has " + recipient["health"] + " health</p>")
-					$(".popup_events").append("<p>" + recipient["name"] + " is " + status + "</p>");
-
-				}
-
-				else if (combatOption < attackChance + 1 && combatOption < attackChance + escapeChance ) {
-					// Escape
-					combatPopupEscape(popupList, popupListArrayIndex, popupListArrayElement);
-					console.log("escape");
-				}
-
-				else if (combatOption < attackChance + escapeChance + 1 && combatOption < 100) {
-					// Surrender
-					combatPopupSurrender(popupList, popupListArrayIndex, popupListArrayElement);
-					console.log("surrender");
-				}
-
-				else if (combatOption < attackChance + escapeChance + surrenderChance + 1 && combatOption < 100) {
-					// Truce
-					combatPopupTruce(popupList, popupListArrayIndex, popupListArrayElement);
-					console.log("truce");
-				}
-
-				/*$(".popup_content").append("<p>" + popupList[popupCounter]['name'] + " " + popupList[popupCounter]['health'] + "</p>");*/
-
-				//console.log(popupOrder[popupOrderArrayIndex]['id']);
-				//console.log(popupOrder[popupOrderArrayIndex]['turn']);
+				$("#popup").addClass("hidden");
+				encounterCheck = false;
 
 			}
-
-			combatantTurn++;
 
 		});
 
@@ -538,12 +539,23 @@ $(function() {
 			targetStatus = "alive";
 		}
 
-		//if 
-
-		console.log(combatPopupList);
-
 		target.data.health = targetHealth;
 		target.data.status = targetStatus;
+		$(target.data.id).data("status", targetStatus);
+
+		var aliveCombatants = [];
+
+		$(combatPopupList).each(function(combatPopupListArrayTargetIndex, combatPopupListArrayTargetElement) {
+
+			if (combatPopupListArrayTargetElement.data.status == "alive") {
+				aliveCombatants.push(combatPopupListArrayTargetElement);
+			}
+
+		});
+
+		if (aliveCombatants.length == 1) {
+			attackEnd = true;
+		}
 
 		return [initiator, initiatorWeapon, target, damageTotal, targetStatus, attackEnd];
 
